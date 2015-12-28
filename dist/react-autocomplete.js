@@ -149,7 +149,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (this.state.isOpen === true && this.state.highlightedIndex !== null) {
 	      var itemNode = React.findDOMNode(this.refs['item-' + this.state.highlightedIndex]);
 	      var menuNode = React.findDOMNode(this.refs.menu);
-	      scrollIntoView(itemNode, menuNode, { onlyScrollIfNeeded: true });
+	      if (itemNode && menuNode) scrollIntoView(itemNode, menuNode, { onlyScrollIfNeeded: true });
+	    }
+	  },
+	
+	  handleCompletion: function handleCompletion(event) {
+	    var _this = this;
+	
+	    if (this.state.isOpen === false) {
+	      // already selected this, do nothing
+	      return;
+	    } else if (this.state.highlightedIndex == null) {
+	      // hit enter after focus but before typing anything so no autocomplete attempt yet
+	      this.setState({
+	        isOpen: false
+	      }, function () {
+	        React.findDOMNode(_this.refs.input).select();
+	      });
+	    } else {
+	      var item = this.getFilteredItems()[this.state.highlightedIndex];
+	      this.setState({
+	        value: this.props.getItemValue(item),
+	        isOpen: false,
+	        highlightedIndex: null
+	      }, function () {
+	        //React.findDOMNode(this.refs.input).focus() // TODO: file issue
+	        React.findDOMNode(_this.refs.input).setSelectionRange(_this.state.value.length, _this.state.value.length);
+	        _this.props.onSelect(_this.state.value, item);
+	      });
 	    }
 	  },
 	
@@ -163,13 +190,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 	
 	  handleChange: function handleChange(event) {
-	    var _this = this;
+	    var _this2 = this;
 	
 	    this._performAutoCompleteOnKeyUp = true;
 	    this.setState({
 	      value: event.target.value
 	    }, function () {
-	      _this.props.onChange(event, _this.state.value);
+	      _this2.props.onChange(event, _this2.state.value);
 	    });
 	  },
 	
@@ -206,30 +233,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 	
 	    Enter: function Enter(event) {
-	      var _this2 = this;
-	
-	      if (this.state.isOpen === false) {
-	        // already selected this, do nothing
-	        return;
-	      } else if (this.state.highlightedIndex == null) {
-	        // hit enter after focus but before typing anything so no autocomplete attempt yet
-	        this.setState({
-	          isOpen: false
-	        }, function () {
-	          React.findDOMNode(_this2.refs.input).select();
-	        });
-	      } else {
-	        var item = this.getFilteredItems()[this.state.highlightedIndex];
-	        this.setState({
-	          value: this.props.getItemValue(item),
-	          isOpen: false,
-	          highlightedIndex: null
-	        }, function () {
-	          //React.findDOMNode(this.refs.input).focus() // TODO: file issue
-	          React.findDOMNode(_this2.refs.input).setSelectionRange(_this2.state.value.length, _this2.state.value.length);
-	          _this2.props.onSelect(_this2.state.value, item);
-	        });
-	      }
+	      this.handleCompletion(event);
 	    },
 	
 	    Escape: function Escape(event) {
@@ -237,6 +241,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        highlightedIndex: null,
 	        isOpen: false
 	      });
+	    },
+	
+	    Tab: function Tab(event) {
+	      event.preventDefault();
+	      this.handleCompletion(event);
 	    }
 	  },
 	
@@ -344,17 +353,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return React.cloneElement(menu, { ref: 'menu' });
 	  },
 	
-	  getActiveItemValue: function getActiveItemValue() {
-	    if (this.state.highlightedIndex === null) return '';else {
-	      var item = this.props.items[this.state.highlightedIndex];
-	      // items can match when we maybeAutoCompleteText, but then get replaced by the app
-	      // for the next render? I think? TODO: file an issue (alab -> enter -> type 'a' for
-	      // alabamaa and then an error would happen w/o this guard, pretty sure there's a
-	      // better way)
-	      return item ? this.props.getItemValue(item) : '';
-	    }
-	  },
-	
 	  handleInputBlur: function handleInputBlur() {
 	    if (this._ignoreBlur) return;
 	    this.setState({
@@ -385,7 +383,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return React.createElement('div', { style: { display: 'inline-block' } }, React.createElement('input', _extends({}, this.props.inputProps, {
 	      role: 'combobox',
 	      'aria-autocomplete': 'both',
-	      'aria-label': this.getActiveItemValue(),
 	      ref: 'input',
 	      onFocus: this.handleInputFocus,
 	      onBlur: this.handleInputBlur,
@@ -401,6 +398,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	      onClick: this.handleInputClick,
 	      value: this.state.value
 	    })), this.state.isOpen && this.renderMenu(), this.props.debug && React.createElement('pre', { style: { marginLeft: 300 } }, JSON.stringify(_debugStates.slice(_debugStates.length - 5, _debugStates.length), null, 2)));
+	  },
+	
+	  focus: function focus() {
+	    React.findDOMNode(this.refs.input).focus();
+	  },
+	
+	  resetInput: function resetInput() {
+	    var _this8 = this;
+	
+	    this.setState({ value: '' }, function () {
+	      _this8.props.onChange(event, _this8.state.value);
+	    });
 	  }
 	});
 	
