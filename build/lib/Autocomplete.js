@@ -84,6 +84,7 @@ var Autocomplete = React.createClass({
   handleCompletion: function handleCompletion(event) {
     var _this = this;
 
+    var nEvent = event.nativeEvent;
     if (this.state.isOpen === false) {
       // already selected this, do nothing
       return;
@@ -103,7 +104,7 @@ var Autocomplete = React.createClass({
       }, function () {
         //React.findDOMNode(this.refs.input).focus() // TODO: file issue
         React.findDOMNode(_this.refs.input).setSelectionRange(_this.state.value.length, _this.state.value.length);
-        _this.props.onSelect(_this.state.value, item);
+        _this.props.onSelect(_this.state.value, item, nEvent);
       });
     }
   },
@@ -236,15 +237,16 @@ var Autocomplete = React.createClass({
     this.setState({ highlightedIndex: index });
   },
 
-  selectItemFromMouse: function selectItemFromMouse(item) {
+  selectItemFromMouse: function selectItemFromMouse(item, evt) {
     var _this5 = this;
 
+    var nEvent = evt.nativeEvent;
     this.setState({
       value: this.props.getItemValue(item),
       isOpen: false,
       highlightedIndex: null
     }, function () {
-      _this5.props.onSelect(_this5.state.value, item);
+      _this5.props.onSelect(_this5.state.value, item, nEvent);
       React.findDOMNode(_this5.refs.input).focus();
       _this5.setIgnoreBlur(false);
     });
@@ -266,8 +268,8 @@ var Autocomplete = React.createClass({
         onMouseEnter: function onMouseEnter() {
           return _this6.highlightItemFromMouse(index);
         },
-        onClick: function onClick() {
-          return _this6.selectItemFromMouse(item);
+        onClick: function onClick(evt) {
+          return _this6.selectItemFromMouse(item, evt);
         },
         ref: 'item-' + index
       });
