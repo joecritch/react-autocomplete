@@ -382,7 +382,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        state: this.state
 	      });
 	    }
-	    return React.createElement('div', { style: { display: 'inline-block' } }, React.createElement('input', _extends({}, this.props.inputProps, {
+	    return React.createElement('div', { style: { display: 'inline-block', flexGrow: 1 } }, React.createElement('input', _extends({}, this.props.inputProps, {
 	      role: 'combobox',
 	      'aria-autocomplete': 'both',
 	      ref: 'input',
