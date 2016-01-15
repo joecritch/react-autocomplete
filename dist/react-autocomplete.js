@@ -83,6 +83,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  displayName: 'Autocomplete',
 	
 	  propTypes: {
+	    autocompleteInputValue: React.PropTypes.bool,
 	    initialValue: React.PropTypes.any,
 	    onChange: React.PropTypes.func,
 	    onSelect: React.PropTypes.func,
@@ -94,6 +95,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	  getDefaultProps: function getDefaultProps() {
 	    return {
+	      autocompleteInputValue: true,
 	      inputProps: {},
 	      onChange: function onChange() {},
 	      onSelect: function onSelect(value, item) {},
@@ -273,7 +275,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  maybeAutoCompleteText: function maybeAutoCompleteText() {
 	    var _this4 = this;
 	
-	    if (this.state.value === '') return;
+	    if (!this.props.autocompleteInputValue || this.state.value === '') return;
 	    var highlightedIndex = this.state.highlightedIndex;
 	
 	    var items = this.getFilteredItems();
