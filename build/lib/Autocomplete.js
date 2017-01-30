@@ -3,6 +3,7 @@
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var React = require('react');
+var ReactDOM = require('react-dom');
 var scrollIntoView = require('dom-scroll-into-view');
 
 var _debugStates = [];
@@ -77,8 +78,8 @@ var Autocomplete = React.createClass({
 
   maybeScrollItemIntoView: function maybeScrollItemIntoView() {
     if (this.state.isOpen === true && this.state.highlightedIndex !== null) {
-      var itemNode = React.findDOMNode(this.refs['item-' + this.state.highlightedIndex]);
-      var menuNode = React.findDOMNode(this.refs.menu);
+      var itemNode = ReactDOM.findDOMNode(this.refs['item-' + this.state.highlightedIndex]);
+      var menuNode = ReactDOM.findDOMNode(this.refs.menu);
       if (itemNode && menuNode) scrollIntoView(itemNode, menuNode, { onlyScrollIfNeeded: true });
     }
   },
@@ -95,7 +96,7 @@ var Autocomplete = React.createClass({
       this.setState({
         isOpen: false
       }, function () {
-        React.findDOMNode(_this.refs.input).select();
+        ReactDOM.findDOMNode(_this.refs.input).select();
       });
     } else {
       var item = this.getFilteredItems()[this.state.highlightedIndex];
@@ -104,8 +105,8 @@ var Autocomplete = React.createClass({
         isOpen: false,
         highlightedIndex: null
       }, function () {
-        //React.findDOMNode(this.refs.input).focus() // TODO: file issue
-        React.findDOMNode(_this.refs.input).setSelectionRange(_this.state.value.length, _this.state.value.length);
+        //ReactDOM.findDOMNode(this.refs.input).focus() // TODO: file issue
+        ReactDOM.findDOMNode(_this.refs.input).setSelectionRange(_this.state.value.length, _this.state.value.length);
         _this.props.onSelect(_this.state.value, item, nEvent);
       });
     }
@@ -212,7 +213,7 @@ var Autocomplete = React.createClass({
     var itemValue = this.props.getItemValue(matchedItem);
     var itemValueDoesMatch = itemValue.toLowerCase().indexOf(this.state.value.toLowerCase()) === 0;
     if (itemValueDoesMatch) {
-      var node = React.findDOMNode(this.refs.input);
+      var node = ReactDOM.findDOMNode(this.refs.input);
       var setSelection = function setSelection() {
         node.value = itemValue;
         node.setSelectionRange(_this4.state.value.length, itemValue.length);
@@ -222,7 +223,7 @@ var Autocomplete = React.createClass({
   },
 
   setMenuPositions: function setMenuPositions() {
-    var node = React.findDOMNode(this.refs.input);
+    var node = ReactDOM.findDOMNode(this.refs.input);
     var rect = node.getBoundingClientRect();
     var computedStyle = getComputedStyle(node);
     var marginBottom = parseInt(computedStyle.marginBottom, 10);
@@ -249,7 +250,7 @@ var Autocomplete = React.createClass({
       highlightedIndex: null
     }, function () {
       _this5.props.onSelect(_this5.state.value, item, nEvent);
-      React.findDOMNode(_this5.refs.input).focus();
+      ReactDOM.findDOMNode(_this5.refs.input).focus();
       _this5.setIgnoreBlur(false);
     });
   },
@@ -343,7 +344,7 @@ var Autocomplete = React.createClass({
   },
 
   focus: function focus() {
-    React.findDOMNode(this.refs.input).focus();
+    ReactDOM.findDOMNode(this.refs.input).focus();
   },
 
   resetInput: function resetInput() {

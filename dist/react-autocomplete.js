@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("React"));
+		module.exports = factory(require("react"), require("react-dom"));
 	else if(typeof define === 'function' && define.amd)
-		define(["React"], factory);
+		define(["react", "react-dom"], factory);
 	else if(typeof exports === 'object')
-		exports["ReactAutocomplete"] = factory(require("React"));
+		exports["ReactAutocomplete"] = factory(require("react"), require("react-dom"));
 	else
-		root["ReactAutocomplete"] = factory(root["React"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_2__) {
+		root["ReactAutocomplete"] = factory(root["React"], root["ReactDOM"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -75,7 +75,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	
 	var React = __webpack_require__(2);
-	var scrollIntoView = __webpack_require__(3);
+	var ReactDOM = __webpack_require__(3);
+	var scrollIntoView = __webpack_require__(4);
 	
 	var _debugStates = [];
 	
@@ -149,8 +150,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	  maybeScrollItemIntoView: function maybeScrollItemIntoView() {
 	    if (this.state.isOpen === true && this.state.highlightedIndex !== null) {
-	      var itemNode = React.findDOMNode(this.refs['item-' + this.state.highlightedIndex]);
-	      var menuNode = React.findDOMNode(this.refs.menu);
+	      var itemNode = ReactDOM.findDOMNode(this.refs['item-' + this.state.highlightedIndex]);
+	      var menuNode = ReactDOM.findDOMNode(this.refs.menu);
 	      if (itemNode && menuNode) scrollIntoView(itemNode, menuNode, { onlyScrollIfNeeded: true });
 	    }
 	  },
@@ -167,7 +168,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.setState({
 	        isOpen: false
 	      }, function () {
-	        React.findDOMNode(_this.refs.input).select();
+	        ReactDOM.findDOMNode(_this.refs.input).select();
 	      });
 	    } else {
 	      var item = this.getFilteredItems()[this.state.highlightedIndex];
@@ -176,8 +177,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        isOpen: false,
 	        highlightedIndex: null
 	      }, function () {
-	        //React.findDOMNode(this.refs.input).focus() // TODO: file issue
-	        React.findDOMNode(_this.refs.input).setSelectionRange(_this.state.value.length, _this.state.value.length);
+	        //ReactDOM.findDOMNode(this.refs.input).focus() // TODO: file issue
+	        ReactDOM.findDOMNode(_this.refs.input).setSelectionRange(_this.state.value.length, _this.state.value.length);
 	        _this.props.onSelect(_this.state.value, item, nEvent);
 	      });
 	    }
@@ -284,7 +285,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var itemValue = this.props.getItemValue(matchedItem);
 	    var itemValueDoesMatch = itemValue.toLowerCase().indexOf(this.state.value.toLowerCase()) === 0;
 	    if (itemValueDoesMatch) {
-	      var node = React.findDOMNode(this.refs.input);
+	      var node = ReactDOM.findDOMNode(this.refs.input);
 	      var setSelection = function setSelection() {
 	        node.value = itemValue;
 	        node.setSelectionRange(_this4.state.value.length, itemValue.length);
@@ -294,7 +295,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 	
 	  setMenuPositions: function setMenuPositions() {
-	    var node = React.findDOMNode(this.refs.input);
+	    var node = ReactDOM.findDOMNode(this.refs.input);
 	    var rect = node.getBoundingClientRect();
 	    var computedStyle = getComputedStyle(node);
 	    var marginBottom = parseInt(computedStyle.marginBottom, 10);
@@ -321,7 +322,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      highlightedIndex: null
 	    }, function () {
 	      _this5.props.onSelect(_this5.state.value, item, nEvent);
-	      React.findDOMNode(_this5.refs.input).focus();
+	      ReactDOM.findDOMNode(_this5.refs.input).focus();
 	      _this5.setIgnoreBlur(false);
 	    });
 	  },
@@ -405,7 +406,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 	
 	  focus: function focus() {
-	    React.findDOMNode(this.refs.input).focus();
+	    ReactDOM.findDOMNode(this.refs.input).focus();
 	  },
 	
 	  resetInput: function resetInput() {
@@ -427,16 +428,22 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 3 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	module.exports = __webpack_require__(4);
-
+	module.exports = __WEBPACK_EXTERNAL_MODULE_3__;
 
 /***/ },
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var util = __webpack_require__(5);
+	module.exports = __webpack_require__(5);
+
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var util = __webpack_require__(6);
 	
 	function scrollIntoView(elem, container, config) {
 	  config = config || {};
@@ -561,7 +568,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports) {
 
 	var RE_NUM = /[\-+]?(?:\d*\.|)\d+(?:[eE][\-+]?\d+|)/.source;

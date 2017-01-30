@@ -1,6 +1,6 @@
 {
   "name": "react-autocomplete",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Accessible, extensible, Autocomplete for React.js",
   "main": "./build/lib/index.js",
   "repository": {
@@ -22,7 +22,8 @@
   "license": "MIT",
   "devDependencies": {
     "rackt-cli": "^0.4.0",
-    "react": "^0.13.3"
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
   },
   "tags": [
     "react",
